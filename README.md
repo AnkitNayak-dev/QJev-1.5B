@@ -124,43 +124,43 @@ cd QJev-1.5B
 pip install -r requirements.txt
 ```
 
-### 2. 1-Command Inference Demo
-Runs an out-of-the-box incident triage decision (automatically fetches weights):
+### 2. 1-Command CLI Decision
 ```bash
-python predict.py
+python qjev.py --context "Patient has severe chest pain and elevated troponin" --choices "Emergency PCI" "Aspirin" "Wait"
 ```
 
-### 3. Python API Integration
+### 3. Super Simple Python API (3 Lines of Code)
 ```python
-from predict import QJevModel
+from qjev import QJev
 
-# Loads directly from Hugging Face Hub or local cache
-model = QJevModel(model_id_or_path="devankit7873/QJev-1.5B")
+# Load ANY edition (Full Standalone, 4-bit Quantized, or LoRA Adapter) in 1 line:
+model = QJev.from_pretrained("devankit7873/QJev-1.5B")
+# Or 4-bit (1.07 GB VRAM):  model = QJev.from_pretrained("devankit7873/QJev-1.5B-4bit")
+# Or LoRA (20 MB download): model = QJev.from_pretrained("devankit7873/QJev-1.5B-LoRA")
 
-context = "Production database primary replica CPU spiked to 100% and connection pool is exhausted with 5,000 waiting queries."
-choices = [
-    "Trigger immediate automated failover to standby replica",
-    "Restart the primary database daemon immediately",
-    "Double connection pool limits without scaling compute",
-    "Silence alerts and monitor for next 15 minutes"
-]
+# 1-Line Decision (<35 ms)
+result = model.decide(
+    context="Production database primary replica CPU spiked to 100% and connection pool is exhausted.",
+    choices=[
+        "Trigger immediate automated failover to standby replica",
+        "Restart the primary database daemon immediately",
+        "Double connection pool limits without scaling compute",
+        "Silence alerts and monitor for next 15 minutes"
+    ]
+)
 
-result = model.predict(context=context, choices=choices)
-print(f"Recommended Action: {result['recommended']} (Confidence: {result['confidence']})")
-print("\nProbability Distribution:")
+print(f"👉 Recommended Action: {result['best_choice']} ({result['confidence']}%)")
 for choice, prob in result['probabilities'].items():
-    print(f" - {choice}: {prob}")
+    print(f"  [{prob:>5.2f}%]  {choice}")
 ```
 
 **Expected Output:**
 ```text
-Recommended Action: Trigger immediate automated failover to standby replica (Confidence: 86.72%)
-
-Probability Distribution:
- - Trigger immediate automated failover to standby replica: 86.72%
- - Restart the primary database daemon immediately: 7.03%
- - Double connection pool limits without scaling compute: 5.71%
- - Silence alerts and monitor for next 15 minutes: 0.50%
+👉 Recommended Action: Trigger immediate automated failover to standby replica (88.28%)
+  [88.28%]  Trigger immediate automated failover to standby replica
+  [ 6.54%]  Restart the primary database daemon immediately
+  [ 4.79%]  Double connection pool limits without scaling compute
+  [ 0.45%]  Silence alerts and monitor for next 15 minutes
 ```
 
 ---
