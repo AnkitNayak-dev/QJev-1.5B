@@ -1,40 +1,19 @@
----
-license: apache-2.0
-base_model: Qwen/Qwen2.5-1.5B-Instruct
-tags:
-- decision-making
-- jev
-- jevbench
-- system-one
-- joint-expected-value
-- reasoning
-- classification
-- qwen
-datasets:
-- SargeDev/jev-distill-corpus-v3
-metrics:
-- accuracy
-- tvd
-- kl_divergence
-pipeline_tag: text-classification
----
-
 <div align="center">
 
 # ⚡ QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
 ### High-Speed System 1 Real-Time Decision Engine (~31 ms Forward Pass)
 
-[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-QJev--1.5B-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/devankit7873/QJev-1.5B)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=for-the-badge&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
-[![JevBench Metamorphic](https://img.shields.io/badge/JevBench-71.5%25%20Score-8A2BE2?style=for-the-badge)](https://jevbench.github.io/)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-QJev--1.5B-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/devankit7873/QJev-1.5B)
+[![GitHub](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=for-the-badge&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
+[![JevBench](https://img.shields.io/badge/JevBench-71.5%25%20Score-8A2BE2?style=for-the-badge)](https://jevbench.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-2EA44F?style=for-the-badge)](LICENSE)
 
 ---
 
-### 📦 **Download Pre-Trained Weights on Hugging Face Hub:**
-## 👉 **[huggingface.co/devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B)** 👈
+### 📦 Pre-Trained Weights & Standalone Models:
+### [🤗 Hugging Face Model Hub: devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B)
 
-**`model.safetensors` (3.08 GB Standalone Fused)** &nbsp;|&nbsp; **`decision_head.safetensors` (3.18 MB)** &nbsp;|&nbsp; **`lora_adapter/` (17.5 MB Edge PEFT)**
+`model.safetensors` (3.08 GB Standalone) &nbsp;•&nbsp; `decision_head.safetensors` (3.18 MB) &nbsp;•&nbsp; `lora_adapter/` (17.5 MB PEFT)
 
 ---
 
