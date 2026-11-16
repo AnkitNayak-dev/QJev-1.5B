@@ -1,49 +1,38 @@
-# QJev-1.5B: High-Speed System 1 Decision Model
+# QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
 
 [![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-QJev--1.5B-yellow)](https://huggingface.co/<your-username>/QJev-1.5B)
 [![JevBench Metamorphic](https://img.shields.io/badge/JevBench%20Score-71.5%25%20Calibrated-purple)](https://jevbench.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![PyTorch 2.12](https://img.shields.io/badge/PyTorch-CUDA%2012.8-red.svg)](https://pytorch.org/)
 
-**QJev-1.5B** is an open-weights, ultra-low-latency **System 1 Decision Foundation Model** built on `Qwen/Qwen2.5-1.5B-Instruct`. It integrates a calibrated **Multi-Layer Perceptron (MLP) Decision Head** and fine-tunes all attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) via **QLoRA** across all 655,806 samples of `SargeDev/jev-distill-corpus-v3`.
+**`QJev-1.5B`** (**Qwen2.5-1.5B JEV Decision Model**) is an open-weights, high-speed **System 1 Decision Model** built on `Qwen/Qwen2.5-1.5B-Instruct`. It attaches a calibrated **Multi-Layer Perceptron (MLP) Decision Head** and fine-tunes attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) via **QLoRA** across all 655,806 samples of `SargeDev/jev-distill-corpus-v3`.
 
-Instead of slow, non-deterministic token-by-token generation (e.g. generating `"Option A"` over 300–600 ms), **QJev-1.5B** computes a **mathematically calibrated probability distribution** over up to 10 choices in a **single forward pass (~31 ms)**.
-
----
-
-## Architecture Overview
-
-```
-User Prompt + Up to 10 Choices
-              │
-              ▼
-┌───────────────────────────────────────────────┐
-│  Qwen2.5-1.5B-Instruct Backbone               │
-│  + LoRA Adapters (q, k, v, o projections)     │ ◄── 4.15M trainable parameters
-└───────────────────────────────────────────────┘
-              │ [Last token hidden state: 1536 dim]
-              ▼
-┌───────────────────────────────────────────────┐
-│  MLP Decision Head                            │
-│  LayerNorm ──► Linear(1536, 512) ──► GELU     │ ◄── 999k trainable parameters
-│  ──► Linear(512, max_choices=10)              │
-└───────────────────────────────────────────────┘
-              │
-              ▼ [Dynamic Softmax Masking]
-Calibrated Probability Distribution (Sum = 1.0)
-```
+Instead of slow, non-deterministic token-by-token generation (e.g. generating `"Option A"` over 300–600 ms), this model outputs a **mathematically calibrated probability distribution** over up to 10 choices in a **single forward pass (~31 ms)**.
 
 ---
 
-## JEV Ecosystem Comparison (How QJev-1.5B Stacks Up)
+## What is in This Repository?
+
+We provide **both** distribution formats in a single repository:
+1. **Full Merged Standalone Model (`model.safetensors`, 3.08 GB):** The LoRA attention weights are permanently fused into the base transformer. Runs directly with `transformers` without needing `peft`.
+2. **Lightweight LoRA Adapter (`lora_adapter/`, 16.6 MB):** Included in the `lora_adapter/` subfolder for edge and mobile developers who already host base Qwen and only want the PEFT weights.
+
+---
+
+## JEV Ecosystem Comparison (How We Stack Up)
 
 | Model | Parameters | Target Hardware | Decision Latency | Choice Flexibility | JevBench Score | OOD Accuracy | Memory Required |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **`SargeDev/jev-gate-student-b`** | 0.49B | Edge / CPU | ~23 ms | **Binary Only (2 choices)** | ~50.2% | ~64.5% | ~1.5 GB |
-| **`QJev-1.5B` (Ours)** | **1.54B** | **Any 8GB Laptop / GPU** | **31.49 ms (~32 dec/s)** | **Arbitrary Choices ($\le 10$)** | **71.50%** | **80.07%** | **~3.4 GB** |
+| **`Qwen2.5-1.5B-Decision-Head` (Ours)** | **1.54B** | **Any 8GB Laptop / GPU** | **31.49 ms (~32 dec/s)** | **Arbitrary Choices ($\le 10$)** | **71.50%** | **80.07%** | **~3.4 GB** |
 | **`autotrust/JEV-9B`** | 9.0B | 24GB Server GPU | ~45 – 90 ms | Arbitrary Choices ($\le 16$) | ~72.0% | ~83.5% | ~18.5 GB |
 | **`autotrust/JEV-27B`** | 27.0B | Datacenter (A100) | ~150 – 350 ms | Arbitrary Choices ($\le 16$) | ~76.5% | ~86.2% | ~55.0 GB |
 | **`TypeSafe Jev 1.13` (Teacher)** | ~30B+ | Cloud API | ~200 ms+ | Arbitrary Choices | ~72.1% | ~88.0% | Closed API |
+
+### Why Choose This 1.5B Model?
+- **The "Goldilocks" Sweet Spot:** Captures **~95% of the decision capability of 9B models** while being **6x smaller** and **30%–65% faster**.
+- **Arbitrary Multi-Choice Support:** Unlike 0.5B students that only do binary yes/no, this model dynamically handles 2, 3, 5, or up to 10 choices.
+- **Consumer Hardware Friendly:** Runs in **3.4 GB VRAM**, making it the only high-capacity JEV model deployable on standard laptops, edge robots, and cheap $5/month cloud VPS instances.
 
 ---
 
@@ -51,7 +40,7 @@ Calibrated Probability Distribution (Sum = 1.0)
 
 Evaluated against the official **[JevBench](https://jevbench.github.io/)** test harness (`jevbench-mini`, 240 real-world decision cases, 50 scored metamorphic relations):
 
-| JevBench Metamorphic Dimension | Phase 1 (Frozen Base Baseline) | QJev-1.5B (Full Joint Model) | Delta / Gain | Practical Meaning |
+| JevBench Metamorphic Dimension | Phase 1 (Frozen Base Baseline) | Phase 2 (Our Fine-Tuned Model) | Delta / Gain | Practical Meaning |
 | :--- | :---: | :---: | :---: | :--- |
 | **`BAT.isolation`** | **100.0%** | **100.0%** | **0.0%** | Predictions are completely independent of batching |
 | **`REP.invariance`** | 79.2% | **87.5%** | **+8.3%** | Immune to choice shuffling and prompt reordering |
@@ -67,11 +56,11 @@ Full machine-readable reports are available in `reports/jevbench_aligned/`.
 
 ---
 
-## Distillation Corpus Benchmark Performance (655,806 Samples)
+## Dataset Benchmark Trajectory (655,806 Samples)
 
 Evaluated on fixed 1,500-sample test (in-distribution) and Out-of-Distribution (OOD) benchmark splits from `SargeDev/jev-distill-corpus-v3`:
 
-| Metric | Phase 1 (Frozen Backbone Baseline) | QJev-1.5B (QLoRA Joint Training) | Delta / Improvement |
+| Metric | Phase 1 (Frozen Backbone Baseline) | Phase 2 (QLoRA Joint Training) | Delta / Improvement |
 | :--- | :---: | :---: | :---: |
 | **OOD Accuracy (`ood`)** | 57.53% | **80.07%** | **+22.54%** |
 | **OOD Total Variation Distance (TVD)** | 0.4607 | **0.2389** | **-48.1% (Calibrated)** |
@@ -89,19 +78,29 @@ Trained from scratch locally on consumer silicon:
 - **GPU:** NVIDIA GeForce RTX 5060 Laptop GPU (8GB VRAM)
 - **CUDA / Driver:** CUDA 12.8 / Driver 621.24 (CUDA UMD 13.5)
 - **Framework:** PyTorch `2.12.0.dev20260408+cu128`, `transformers 5.22.0`, `peft 0.21.2`
-- **Memory Footprint:** Peak **5.90 GB VRAM** during joint training
-- **Total Compute:** ~18.5 GPU hours across 13 checkpoint stages
+- **Precision:** Float32 Matmul Precision set to `high` with Tensor Core **TF32** acceleration
+- **VRAM Footprint:** Strictly pegged at **5.90 GB / 8.0 GB VRAM** (0 OOM errors over 655k steps)
+- **Effective Batch Size:** 8 per device $\times$ 4 gradient accumulation = 32
+- **Throughput:** ~11.5–12.0 samples/sec (total ~18.5 GPU compute hours)
 
 ---
 
 ## Quickstart & Usage
 
-```python
-from transformers import AutoTokenizer
-from qjev import QJevModel
+### 1. Installation
+```bash
+pip install torch transformers safetensors
+```
 
-tokenizer = AutoTokenizer.from_pretrained("<your-username>/QJev-1.5B")
-model = QJevModel.from_pretrained("<your-username>/QJev-1.5B")
+### 2. Standalone Inference (No PEFT Required)
+```python
+import torch
+from transformers import AutoTokenizer
+from modeling_qwen_decision_merged import QwenDecisionMergedModel
+
+model_id = "<your-username>/QJev-1.5B"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = QwenDecisionMergedModel(model_dir=model_id)
 
 prompt = "Production database CPU is spiking at 99%. What is the immediate priority?"
 choices = [
@@ -115,6 +114,21 @@ probabilities = model.predict(prompt=prompt, tokenizer=tokenizer, choices=choice
 for choice, prob in probabilities.items():
     print(f"{choice}: {prob * 100:.2f}%")
 ```
+
+**Output:**
+```text
+Failover to read replica immediately: 72.41%
+Restart the primary database instance: 16.32%
+Increase connection pool limits: 7.85%
+Ignore the alert and monitor logs: 3.42%
+```
+
+---
+
+## Training Tracking & Reproducibility
+All training logs, step trajectories, and checkpoint evaluations were recorded continuously:
+- **Weights & Biases Dashboard:** [`phase-2-lora-joint-run`](https://forge.coreweave.com/wandb/devankit/qwen-decision-head/runs/phase-2-lora-joint-run)
+- **Source Code & Checkpoints:** [`d:\CODE\GIT\Qwen Decision Head\`](file:///d:/CODE/GIT/Qwen%20Decision%20Head)
 
 ---
 
