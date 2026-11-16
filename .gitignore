@@ -1,0 +1,28 @@
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Training checkpoints & raw weights
+checkpoints/
+*.pt
+
+# Large dataset caches & downloaded base models
+data/
+models/
+
+# Weights & Biases telemetry
+wandb/
+
+# JevBench local cache
+.jevbench-cache/
+
+# Large exported model weights & local export packages (hosted on Hugging Face)
+export/
+*.safetensors
+*.bin

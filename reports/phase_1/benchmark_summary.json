@@ -1,0 +1,79 @@
+[
+  {
+    "checkpoint": "100k",
+    "test_accuracy": 59.87,
+    "test_kl_divergence": 0.2267,
+    "test_tvd": 0.2027,
+    "test_latency_ms": 43.34,
+    "ood_accuracy": 58.0,
+    "ood_kl_divergence": 0.8351,
+    "ood_tvd": 0.4678,
+    "ood_latency_ms": 42.97
+  },
+  {
+    "checkpoint": "200k",
+    "test_accuracy": 71.27,
+    "test_kl_divergence": 0.2045,
+    "test_tvd": 0.1853,
+    "test_latency_ms": 43.43,
+    "ood_accuracy": 59.8,
+    "ood_kl_divergence": 0.7885,
+    "ood_tvd": 0.4575,
+    "ood_latency_ms": 42.98
+  },
+  {
+    "checkpoint": "300k",
+    "test_accuracy": 71.47,
+    "test_kl_divergence": 0.1968,
+    "test_tvd": 0.1834,
+    "test_latency_ms": 42.95,
+    "ood_accuracy": 60.27,
+    "ood_kl_divergence": 0.7935,
+    "ood_tvd": 0.4401,
+    "ood_latency_ms": 43.13
+  },
+  {
+    "checkpoint": "400k",
+    "test_accuracy": 70.47,
+    "test_kl_divergence": 0.1883,
+    "test_tvd": 0.175,
+    "test_latency_ms": 42.95,
+    "ood_accuracy": 59.13,
+    "ood_kl_divergence": 0.7906,
+    "ood_tvd": 0.4447,
+    "ood_latency_ms": 43.15
+  },
+  {
+    "checkpoint": "500k",
+    "test_accuracy": 72.13,
+    "test_kl_divergence": 0.1828,
+    "test_tvd": 0.1707,
+    "test_latency_ms": 43.13,
+    "ood_accuracy": 65.8,
+    "ood_kl_divergence": 0.7442,
+    "ood_tvd": 0.435,
+    "ood_latency_ms": 43.04
+  },
+  {
+    "checkpoint": "600k",
+    "test_accuracy": 74.6,
+    "test_kl_divergence": 0.1744,
+    "test_tvd": 0.1615,
+    "test_latency_ms": 43.61,
+    "ood_accuracy": 59.07,
+    "ood_kl_divergence": 0.7701,
+    "ood_tvd": 0.4314,
+    "ood_latency_ms": 43.13
+  },
+  {
+    "checkpoint": "Final (655.8k)",
+    "test_accuracy": 75.67,
+    "test_kl_divergence": 0.1757,
+    "test_tvd": 0.1664,
+    "test_latency_ms": 43.05,
+    "ood_accuracy": 57.53,
+    "ood_kl_divergence": 0.7884,
+    "ood_tvd": 0.4607,
+    "ood_latency_ms": 42.94
+  }
+]

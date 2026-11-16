@@ -1,0 +1,20 @@
+{
+  "test_split": {
+    "samples": 1500,
+    "eval_loss": 0.0863,
+    "top1_accuracy": 82.13,
+    "mean_kl_divergence": 0.0863,
+    "mean_tvd": 0.0957,
+    "latency_ms_per_sample": 28.45,
+    "total_eval_time_sec": 42.68
+  },
+  "ood_split": {
+    "samples": 1500,
+    "eval_loss": 0.7325,
+    "top1_accuracy": 75.73,
+    "mean_kl_divergence": 0.7325,
+    "mean_tvd": 0.2913,
+    "latency_ms_per_sample": 30.29,
+    "total_eval_time_sec": 45.44
+  }
+}
