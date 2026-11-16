@@ -7,8 +7,9 @@ import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import jevbench as jb
 
-sys.path.append(os.path.abspath("export/Qwen2.5-1.5B-Decision-Head-Merged"))
-from modeling_qwen_decision_merged import QwenDecisionMergedModel, DecisionHead
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(os.path.join(repo_root, "src"))
+from model import DecisionHead
 
 # -------------------------------------------------------------
 # 1. Phase 1 Backend: Frozen Backbone + Decision Head

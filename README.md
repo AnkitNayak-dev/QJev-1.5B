@@ -93,17 +93,19 @@ Trained from scratch locally on consumer silicon:
 pip install torch transformers safetensors
 ```
 
-### 2. Standalone Inference (No PEFT Required)
+### 2. Run Inference Demo (1 Command)
+```bash
+python predict.py
+```
+
+### 3. Python API Integration
 ```python
-import torch
-from transformers import AutoTokenizer
-from modeling_qwen_decision_merged import QwenDecisionMergedModel
+from predict import QJevModel
 
-model_id = "devankit7873/QJev-1.5B"
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = QwenDecisionMergedModel(model_dir=model_id)
+# Loads weights directly from Hugging Face or local cache
+model = QJevModel(model_id_or_path="devankit7873/QJev-1.5B")
 
-prompt = "Production database CPU is spiking at 99%. What is the immediate priority?"
+context = "Production database CPU is spiking at 99%. What is the immediate priority?"
 choices = [
     "Failover to read replica immediately",
     "Restart the primary database instance",
@@ -111,17 +113,51 @@ choices = [
     "Ignore the alert and monitor logs"
 ]
 
-probabilities = model.predict(prompt=prompt, tokenizer=tokenizer, choices=choices)
-for choice, prob in probabilities.items():
-    print(f"{choice}: {prob * 100:.2f}%")
+result = model.predict(context=context, choices=choices)
+print(f"Recommended: {result['recommended']} (Confidence: {result['confidence']})")
+for choice, prob in result['probabilities'].items():
+    print(f" - {choice}: {prob}")
 ```
 
 **Output:**
 ```text
-Failover to read replica immediately: 72.41%
-Restart the primary database instance: 16.32%
-Increase connection pool limits: 7.85%
-Ignore the alert and monitor logs: 3.42%
+Recommended: Failover to read replica immediately (Confidence: 86.72%)
+ - Failover to read replica immediately: 86.72%
+ - Restart the primary database instance: 7.03%
+ - Double connection pool limits without scaling compute: 5.71%
+ - Silence alerts and monitor for next 15 minutes: 0.50%
+```
+
+---
+
+## Repository Structure
+
+```text
+├── README.md                 # Project showcase, benchmarks, and usage
+├── LICENSE                   # Apache 2.0 open-source license
+├── requirements.txt          # Python dependencies
+├── predict.py                # 1-click single-pass inference demo
+│
+├── src/                      # Core modeling and training pipeline
+│   ├── model.py              # MLP Decision Head + Qwen integration
+│   ├── dataset.py            # ChatML streaming dataset loader
+│   ├── train.py              # Phase 1 baseline training script
+│   ├── train_phase2.py       # Phase 2 QLoRA joint training script (655k steps)
+│   └── evaluate.py           # Evaluation metrics (TVD, Accuracy, KL loss)
+│
+├── benchmark/                # Evaluation suites
+│   └── run_jevbench.py       # Official JevBench metamorphic evaluation runner
+│
+├── reports/                  # Complete empirical benchmark records
+│   ├── jevbench_aligned/     # Official JevBench scores (71.5% calibrated)
+│   ├── phase_1/              # Phase 1 baseline evaluation records
+│   └── phase_2/              # Phase 2 evaluations across all 50k checkpoints
+│
+└── scripts/                  # Workflow utilities
+    ├── merge_and_export.py   # LoRA fusing and safetensors export
+    ├── download_data.py      # Dataset loader from Hugging Face
+    ├── download_model.py     # Base model downloader
+    └── upload_to_hf.py       # Automated Hugging Face publisher
 ```
 
 ---
