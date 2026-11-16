@@ -1,3 +1,24 @@
+---
+license: apache-2.0
+base_model: Qwen/Qwen2.5-1.5B-Instruct
+tags:
+- decision-making
+- jev
+- jevbench
+- system-one
+- joint-expected-value
+- reasoning
+- classification
+- qwen
+datasets:
+- SargeDev/jev-distill-corpus-v3
+metrics:
+- accuracy
+- tvd
+- kl_divergence
+pipeline_tag: text-classification
+---
+
 <div align="center">
 
 # ⚡ QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
