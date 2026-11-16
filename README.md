@@ -1,6 +1,6 @@
 # QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
 
-[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-QJev--1.5B-yellow)](https://huggingface.co/<your-username>/QJev-1.5B)
+[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-QJev--1.5B-yellow)](https://huggingface.co/devankit7873/QJev-1.5B)
 [![JevBench Metamorphic](https://img.shields.io/badge/JevBench%20Score-71.5%25%20Calibrated-purple)](https://jevbench.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![PyTorch 2.12](https://img.shields.io/badge/PyTorch-CUDA%2012.8-red.svg)](https://pytorch.org/)
@@ -98,7 +98,7 @@ import torch
 from transformers import AutoTokenizer
 from modeling_qwen_decision_merged import QwenDecisionMergedModel
 
-model_id = "<your-username>/QJev-1.5B"
+model_id = "devankit7873/QJev-1.5B"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = QwenDecisionMergedModel(model_dir=model_id)
 
