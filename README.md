@@ -199,7 +199,8 @@ Recommended: Failover to read replica immediately (Confidence: 86.72%)
 ## Training Tracking & Reproducibility
 All training logs, step trajectories, and checkpoint evaluations were recorded continuously:
 - **Weights & Biases Dashboard:** [`phase-2-lora-joint-run`](https://forge.coreweave.com/wandb/devankit/qwen-decision-head/runs/phase-2-lora-joint-run)
-- **Source Code & Checkpoints:** [`d:\CODE\GIT\Qwen Decision Head\`](file:///d:/CODE/GIT/Qwen%20Decision%20Head)
+- **Source Code & Pipelines:** [github.com/AnkitNayak-dev/QJev-1.5B](https://github.com/AnkitNayak-dev/QJev-1.5B)
+- **Model Weights & Hub:** [huggingface.co/devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B)
 
 ---
 
