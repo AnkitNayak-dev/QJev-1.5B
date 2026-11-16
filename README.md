@@ -1,6 +1,7 @@
 # QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
 
 [![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-QJev--1.5B-yellow)](https://huggingface.co/devankit7873/QJev-1.5B)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
 [![JevBench Metamorphic](https://img.shields.io/badge/JevBench%20Score-71.5%25%20Calibrated-purple)](https://jevbench.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![PyTorch 2.12](https://img.shields.io/badge/PyTorch-CUDA%2012.8-red.svg)](https://pytorch.org/)
@@ -24,7 +25,7 @@ We provide **both** distribution formats in a single repository:
 | Model | Parameters | Target Hardware | Decision Latency | Choice Flexibility | JevBench Score | OOD Accuracy | Memory Required |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **`SargeDev/jev-gate-student-b`** | 0.49B | Edge / CPU | ~23 ms | **Binary Only (2 choices)** | ~50.2% | ~64.5% | ~1.5 GB |
-| **`Qwen2.5-1.5B-Decision-Head` (Ours)** | **1.54B** | **Any 8GB Laptop / GPU** | **31.49 ms (~32 dec/s)** | **Arbitrary Choices ($\le 10$)** | **71.50%** | **80.07%** | **~3.4 GB** |
+| **`QJev-1.5B` (Ours)** | **1.54B** | **Any 8GB Laptop / GPU** | **31.49 ms (~32 dec/s)** | **Arbitrary Choices ($\le 10$)** | **71.50%** | **80.07%** | **~3.4 GB** |
 | **`autotrust/JEV-9B`** | 9.0B | 24GB Server GPU | ~45 – 90 ms | Arbitrary Choices ($\le 16$) | ~72.0% | ~83.5% | ~18.5 GB |
 | **`autotrust/JEV-27B`** | 27.0B | Datacenter (A100) | ~150 – 350 ms | Arbitrary Choices ($\le 16$) | ~76.5% | ~86.2% | ~55.0 GB |
 | **`TypeSafe Jev 1.13` (Teacher)** | ~30B+ | Cloud API | ~200 ms+ | Arbitrary Choices | ~72.1% | ~88.0% | Closed API |
