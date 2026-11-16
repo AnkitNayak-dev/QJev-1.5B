@@ -10,10 +10,10 @@
 
 ---
 
-### 📦 Pre-Trained Weights & Standalone Models:
-### [🤗 Hugging Face Model Hub: devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B)
-
-`model.safetensors` (3.08 GB Standalone) &nbsp;•&nbsp; `decision_head.safetensors` (3.18 MB) &nbsp;•&nbsp; `lora_adapter/` (17.5 MB PEFT)
+### 📦 QJev Model Family (Choose Your Format):
+- **Full Fused Standalone:** [devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B) (3.08 GB • Zero PEFT dependency)
+- **Lightweight LoRA Adapter:** [devankit7873/QJev-1.5B-LoRA](https://huggingface.co/devankit7873/QJev-1.5B-LoRA) (20 MB • Modular edge loading)
+- **4-Bit NF4 Quantized:** [devankit7873/QJev-1.5B-4bit](https://huggingface.co/devankit7873/QJev-1.5B-4bit) (1.15 GB • Ultra-low 1.07 GB VRAM)
 
 ---
 
