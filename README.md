@@ -1,58 +1,37 @@
----
-license: apache-2.0
-base_model: Qwen/Qwen2.5-1.5B-Instruct
-library_name: transformers
-tags:
-- transformers
-- pytorch
-- causal-lm
-- qwen
-- qwen2
-- decision-making
-- system-one
-- reasoning
-- jev
-- jevbench
-- joint-expected-value
-- classification
-- safetensors
-- qlora
-- agent
-- decision-model
-- text-classification
-- fast-inference
-datasets:
-- SargeDev/jev-distill-corpus-v3
-metrics:
-- accuracy
-- tvd
-- kl_divergence
-pipeline_tag: text-classification
----
-
 <div align="center">
 
 # QJev-1.5B: High-Speed System 1 JEV Decision Model
-### Single-Pass Joint Expected Value Decision Engine
+**Single-Pass Joint Expected Value Decision Engine (~31 ms Forward Pass)**
 
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-devankit7873%2FQJev--1.5B-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/devankit7873/QJev-1.5B)
 [![GitHub](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=flat-square&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
-[![JevBench Strict](https://img.shields.io/badge/JevBench%20Official-62.53%25%20(tol=0.05)-8A2BE2?style=flat-square)](https://benchmarkheaven.com/jev-models)
+[![JevBench Strict](https://img.shields.io/badge/JevBench%20Strict-62.53%25%20(tol=0.05)-8A2BE2?style=flat-square)](https://benchmarkheaven.com/jev-models)
 [![JevBench Relaxed](https://img.shields.io/badge/JevBench%20Relaxed-71.50%25%20(tol=0.10)-blue?style=flat-square)](https://benchmarkheaven.com/jev-models)
 [![License](https://img.shields.io/badge/License-Apache%202.0-2EA44F?style=flat-square)](LICENSE)
 
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#benchmark-results">Benchmark Results</a> •
+  <a href="#model-variants">Model Variants</a> •
+  <a href="#quickstart">Quickstart</a> •
+  <a href="#serving-and-deployment">Serving and Deployment</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#repository-structure">Repository Structure</a> •
+  <a href="#citation">Citation</a>
+</p>
+
+</div>
+
 ---
 
-```
+### Model Hierarchy
+
+```text
 Qwen/Qwen2.5-1.5B-Instruct (Base Model)
  └── devankit7873/QJev-1.5B (Flagship Fused 16-bit, 3.08 GB)
       ├── devankit7873/QJev-1.5B-LoRA (PEFT Adapter, 20 MB)
       └── devankit7873/QJev-1.5B-4bit (NF4 Quantized, 1.15 GB)
 ```
-
-[Overview](#overview) • [Benchmark Evaluation](#benchmark-evaluation) • [Model Family](#model-family) • [Quickstart](#quickstart) • [Serving and Deployment](#serving-and-deployment) • [Architecture](#architecture) • [Repository Structure](#repository-structure) • [Citation](#citation)
-
-</div>
 
 ---
 
@@ -63,6 +42,7 @@ Traditional large language models perform decision-making through sequential, au
 **QJev-1.5B** implements a direct System 1 decision mechanism by coupling a calibrated Multi-Layer Perceptron (MLP) decision head to the final hidden representation of `Qwen/Qwen2.5-1.5B-Instruct`. Rather than generating text tokens, the model computes a calibrated probability distribution across up to 10 candidate actions in a single forward pass (~31 ms on consumer hardware).
 
 ### Key Characteristics
+
 - **Single Forward Pass Execution:** Decision latency of ~31 ms (~32 decisions/second per device).
 - **Calibrated Probability Distribution:** Direct outputs represent normalized decision probabilities rather than heuristic sequence log-probabilities.
 - **Dynamic Choice Support:** Accommodates arbitrary choice cardinalities from 2 up to 10 options with dynamic logit masking.
@@ -70,11 +50,11 @@ Traditional large language models perform decision-making through sequential, au
 
 ---
 
-## Benchmark Evaluation
+## Benchmark Results
 
 QJev-1.5B is evaluated against the official [JevBench](https://jevbench.github.io/) metamorphic test harness (`jevbench-mini`, 240 evaluation cases, 50 scored relations, 1,468 trials) following standard BenchmarkHeaven submission criteria.
 
-### BenchmarkHeaven Leaderboard Comparison
+### Leaderboard Comparison
 
 All models evaluated under official strict calibration criteria (**tolerance = 0.05**):
 
@@ -109,11 +89,11 @@ Machine-readable evaluation artifacts are archived under `reports/jevbench/`.
 
 ---
 
-## Model Family
+## Model Variants
 
 QJev-1.5B is available in three deployment formats:
 
-| Format | Hugging Face Repository | Disk Size | VRAM Footprint | Recommended Use Case |
+| Variant | Hugging Face Repository | Disk Size | VRAM Footprint | Recommended Use Case |
 | :--- | :--- | :---: | :---: | :--- |
 | **Full Fused (FP16)** | [devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B) | 3.08 GB | 3.4 GB | Production servers, vLLM, standalone microservices |
 | **PEFT Adapter** | [devankit7873/QJev-1.5B-LoRA](https://huggingface.co/devankit7873/QJev-1.5B-LoRA) | 20.7 MB | Shared | Multi-tenant deployments caching `Qwen2.5-1.5B-Instruct` |
@@ -238,7 +218,7 @@ vllm serve devankit7873/QJev-1.5B --task classify --port 8000
 
 ## Architecture
 
-```
+```text
 [Prompt Context + Formatted Candidate Choices]
                        │
                        ▼
