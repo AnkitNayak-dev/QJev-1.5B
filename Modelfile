@@ -1,0 +1,25 @@
+# Modelfile for QJev-1.5B (Ollama Deployment)
+#
+# Usage:
+#   1. ollama create qjev-1.5b -f Modelfile
+#   2. ollama run qjev-1.5b
+#
+# Base model uses Qwen2.5-1.5B architecture with custom QJev System Prompt
+
+FROM qwen2.5:1.5b
+
+SYSTEM """You are QJev-1.5B, a specialized System 1 Real-Time Decision Head model.
+Your role is to evaluate complex operational scenarios and output an optimal, decisive choice from the provided options with calibrated confidence.
+Always evaluate evidence objectively, resist distractors, and output the single best decision."""
+
+TEMPLATE """<|im_start|>system
+{{ .System }}<|im_end|>
+<|im_start|>user
+{{ .Prompt }}<|im_end|>
+<|im_start|>assistant
+Decision:"""
+
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"

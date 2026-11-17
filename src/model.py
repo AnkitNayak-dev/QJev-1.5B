@@ -130,10 +130,14 @@ class QwenLoRADecisionModel(nn.Module):
         self.head = DecisionHead(hidden_size=hidden_size, max_choices=max_choices).float()
 
         if head_weights_path and os.path.exists(head_weights_path):
-            raw = torch.load(head_weights_path, map_location="cpu")
-            state = raw.get("head_state_dict", raw)
+            if head_weights_path.endswith(".safetensors"):
+                from safetensors.torch import load_file
+                state = load_file(head_weights_path)
+            else:
+                raw = torch.load(head_weights_path, map_location="cpu", weights_only=False)
+                state = raw.get("head_state_dict", raw)
             self.head.load_state_dict(state)
-            print(f"[Phase 2] Decision Head initialized from Phase 1 weights: {head_weights_path}")
+            print(f"[Model] Decision Head loaded from: {head_weights_path}")
 
     def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor, num_choices: Optional[torch.Tensor] = None):
         outputs = self.backbone_inner(

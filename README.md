@@ -5,7 +5,7 @@
 
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-QJev--1.5B-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/devankit7873/QJev-1.5B)
 [![GitHub](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=for-the-badge&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
-[![JevBench](https://img.shields.io/badge/JevBench-71.5%25%20Score-8A2BE2?style=for-the-badge)](https://jevbench.github.io/)
+[![JevBench](https://img.shields.io/badge/JevBench-62.53%25%20Official-8A2BE2?style=for-the-badge)](https://jevbench.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-2EA44F?style=for-the-badge)](LICENSE)
 
 ---
@@ -60,19 +60,19 @@ Traditional LLMs make decisions through slow, non-deterministic token-by-token a
 
 Evaluated against the official **[JevBench](https://jevbench.github.io/)** test harness (`jevbench-mini`, 240 real-world decision cases, 50 scored metamorphic relations):
 
-| JevBench Metamorphic Dimension | Phase 1 (Frozen Base Baseline) | Phase 2 (Our Fine-Tuned Model) | Delta / Gain | Practical Meaning |
+| JevBench Metamorphic Dimension | Baseline (Pre-Consistency) | QJev-1.5B (Phase 3 Consistency) | Delta / Gain | Practical Meaning |
 | :--- | :---: | :---: | :---: | :--- |
-| **`BAT.isolation`** | **100.0%** | **100.0%** | **0.0%** | Predictions are completely independent of batching |
-| **`REP.invariance`** | 79.2% | **87.5%** | **+8.3%** | Immune to choice shuffling and prompt reordering |
-| **`REP.type`** | 64.6% | **85.4%** | **+20.8%** | Strict adherence to output probability typing |
-| **`LOG.monotonicity`** | 63.9% | **76.4%** | **+12.5%** | Supportive evidence strictly increases probability |
-| **`CHO.conditioning`** | 34.7% | **70.8%** | **+36.1%** | Removing irrelevant choices preserves odds ratios |
-| **`REP.binding`** | 63.9% | **73.6%** | **+9.7%** | Strict semantic criteria binding |
-| **`REP.equivariance`** | 36.1% | **70.8%** | **+34.7%** | Symmetrical consistency under prompt transformations |
-| **OVERALL JEVBENCH SCORE (Calibrated 0.10)** | **60.2%** `[57–63]` | **71.5%** `[69–74]` | **+11.3%** | **Substantial leap across all 50 relations** |
-| **OVERALL JEVBENCH SCORE (Strict 0.05)** | **48.8%** `[47–51]` | **58.6%** `[56–61]` | **+9.8%** | **Strict zero-variance compliance** |
+| **`BAT.isolation`** | **100.0%** | **100.0%** | **0.0%** | Predictions are completely independent of batching (Zero cross-talk) |
+| **`REP.type`** | 77.1% | **83.3%** | **+6.2%** | Format coherence across multi-choice, boolean, and ordinal score |
+| **`REP.invariance`** | 73.2% | **74.4%** | **+1.2%** | Immune to choice shuffling, key renames, and prompt perturbation |
+| **`LOG.bounds`** | 62.5% | **67.9%** | **+5.4%** | Strict adherence to probabilistic upper/lower bounds |
+| **`CHO.conditioning`** | 41.7% | **56.9%** | **+15.2%** | Removing irrelevant choices preserves odds ratios (Independence) |
+| **`REP.equivariance`** | 48.6% | **55.6%** | **+7.0%** | Symmetrical consistency under prompt transformations |
+| **`MEA.partition`** | 30.7% | **41.1%** | **+10.4%** | Probability mass is preserved across coarsened option partitions |
+| **OVERALL JEVBENCH OFFICIAL (Strict 0.05)** | **58.67%** `[56–61]` | **62.53%** `[60–65]` | **+3.86%** | **Official Benchmark Standard (Places in 4B-model tier)** |
+| **OVERALL JEVBENCH (Relaxed 0.10)** | 60.2% | **71.5%** | **+11.3%** | Lenient consistency threshold |
 
-Full machine-readable reports are available in `reports/jevbench_aligned/`.
+Machine-readable evaluation reports are archived in `reports/jevbench/`.
 
 ---
 
@@ -162,6 +162,52 @@ for choice, prob in result['probabilities'].items():
   [ 4.79%]  Double connection pool limits without scaling compute
   [ 0.45%]  Silence alerts and monitor for next 15 minutes
 ```
+
+---
+
+## 🌐 Multi-Engine Inference Deployment
+
+QJev-1.5B is designed to deploy across **all major LLM serving runtimes**:
+
+### 1. vLLM (High-Throughput Production)
+```bash
+# Serve QJev with continuous batching and PagedAttention:
+vllm serve devankit7873/QJev-1.5B --task classify --port 8000
+```
+Query from Python via `qjev.py`:
+```python
+from qjev import QJev
+model = QJev.from_remote("http://localhost:8000")
+result = model.decide(context="Kubernetes node 3 unreachable", choices=["Drain", "Reboot", "Wait"])
+```
+
+### 2. Ollama (Local Mac / PC / CPU)
+Create and run locally using the included `Modelfile`:
+```bash
+ollama create qjev-1.5b -f Modelfile
+ollama run qjev-1.5b
+```
+Or query from Python:
+```python
+from qjev import QJev
+model = QJev.from_ollama("http://localhost:11434", model="qjev-1.5b")
+```
+
+### 3. llama.cpp / GGUF (Edge Devices & LM Studio)
+Convert to GGUF format using the export tool:
+```bash
+python scripts/export_gguf.py --model-dir export/QJev-1.5B-Phase3 --out-file qjev-1.5b-f16.gguf
+./llama-quantize qjev-1.5b-f16.gguf qjev-1.5b-q4_k_m.gguf Q4_K_M
+```
+
+### 4. Unified Microservice Server (`serve.py`)
+Run the all-in-one FastAPI server exposing REST, System One, and OpenAI protocols:
+```bash
+python serve.py --port 8000
+```
+* **REST API:** `POST /v1/decide`
+* **Official Jev Protocol:** `POST /v1/systemone`
+* **OpenAI Drop-In:** `POST /v1/chat/completions`
 
 ---
 
