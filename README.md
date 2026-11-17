@@ -1,3 +1,35 @@
+---
+license: apache-2.0
+base_model: Qwen/Qwen2.5-1.5B-Instruct
+library_name: transformers
+tags:
+- transformers
+- pytorch
+- causal-lm
+- qwen
+- qwen2
+- decision-making
+- system-one
+- reasoning
+- jev
+- jevbench
+- joint-expected-value
+- classification
+- safetensors
+- qlora
+- agent
+- decision-model
+- text-classification
+- fast-inference
+datasets:
+- SargeDev/jev-distill-corpus-v3
+metrics:
+- accuracy
+- tvd
+- kl_divergence
+pipeline_tag: text-classification
+---
+
 <div align="center">
 
 # ⚡ QJev-1.5B: Qwen2.5-1.5B JEV Decision Model
