@@ -6,9 +6,9 @@ Usage:
     from qjev import QJev
 
     # Load any edition in 1 line:
-    model = QJev.from_pretrained("devankit7873/QJev-1.5B")
-    # or model = QJev.from_pretrained("devankit7873/QJev-1.5B-4bit")
-    # or model = QJev.from_pretrained("devankit7873/QJev-1.5B-LoRA")
+    model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B")
+    # or model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B-4bit")
+    # or model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B-LoRA")
 
     result = model.decide(
         context="Production database CPU spiked to 100% and connection pool is exhausted.",
@@ -60,7 +60,7 @@ class QJev:
     """
     Universal user-friendly client for QJev-1.5B decision models.
     """
-    def __init__(self, model_id_or_path: str = "devankit7873/QJev-1.5B", device: Optional[str] = None):
+    def __init__(self, model_id_or_path: str = "AnkitNayak-dev/QJev-1.5B", device: Optional[str] = None):
         if device is None:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         else:
@@ -116,7 +116,7 @@ class QJev:
         print("Ready for real-time decisions (<35 ms)!")
 
     @classmethod
-    def from_pretrained(cls, model_id_or_path: str = "devankit7873/QJev-1.5B", device: Optional[str] = None) -> "QJev":
+    def from_pretrained(cls, model_id_or_path: str = "AnkitNayak-dev/QJev-1.5B", device: Optional[str] = None) -> "QJev":
         return cls(model_id_or_path=model_id_or_path, device=device)
 
     def _format_prompt(self, context: str, choices: List[str], question: Optional[str] = None) -> str:
@@ -272,14 +272,14 @@ class QJevRemote:
 
 def main():
     parser = argparse.ArgumentParser(description="QJev: Instant Single-Pass Decision Model")
-    parser.add_argument("--model", type=str, default="devankit7873/QJev-1.5B", help="Model repo or local path")
+    parser.add_argument("--model", type=str, default="AnkitNayak-dev/QJev-1.5B", help="Model repo or local path")
     parser.add_argument("--context", type=str, default=None, help="Decision situation/context")
     parser.add_argument("--choices", nargs="+", default=None, help="List of candidate choices (up to 10)")
     args = parser.parse_args()
 
     # Prefer local export folder if available locally for speed
     model_id = args.model
-    if model_id == "devankit7873/QJev-1.5B" and os.path.exists("export/Qwen2.5-1.5B-Decision-Head-Merged"):
+    if model_id == "AnkitNayak-dev/QJev-1.5B" and os.path.exists("export/Qwen2.5-1.5B-Decision-Head-Merged"):
         model_id = "export/Qwen2.5-1.5B-Decision-Head-Merged"
 
     client = QJev.from_pretrained(model_id)

@@ -3,7 +3,7 @@
 # QJev-1.5B: High-Speed System 1 JEV Decision Model
 **Single-Pass Joint Expected Value Decision Engine (~31 ms Forward Pass)**
 
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-devankit7873%2FQJev--1.5B-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/devankit7873/QJev-1.5B)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-AnkitNayak-dev%2FQJev--1.5B-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/AnkitNayak-dev/QJev-1.5B)
 [![GitHub](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=flat-square&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
 [![JevBench Strict](https://img.shields.io/badge/JevBench%20Strict-62.53%25%20(tol=0.05)-8A2BE2?style=flat-square)](https://benchmarkheaven.com/jev-models)
 [![JevBench Relaxed](https://img.shields.io/badge/JevBench%20Relaxed-71.50%25%20(tol=0.10)-blue?style=flat-square)](https://benchmarkheaven.com/jev-models)
@@ -28,9 +28,9 @@
 
 ```text
 Qwen/Qwen2.5-1.5B-Instruct (Base Model)
- └── devankit7873/QJev-1.5B (Flagship Fused 16-bit, 3.08 GB)
-      ├── devankit7873/QJev-1.5B-LoRA (PEFT Adapter, 20 MB)
-      └── devankit7873/QJev-1.5B-4bit (NF4 Quantized, 1.15 GB)
+ └── AnkitNayak-dev/QJev-1.5B (Flagship Fused 16-bit, 3.08 GB)
+      ├── AnkitNayak-dev/QJev-1.5B-LoRA (PEFT Adapter, 20 MB)
+      └── AnkitNayak-dev/QJev-1.5B-4bit (NF4 Quantized, 1.15 GB)
 ```
 
 ---
@@ -95,9 +95,9 @@ QJev-1.5B is available in three deployment formats:
 
 | Variant | Hugging Face Repository | Disk Size | VRAM Footprint | Recommended Use Case |
 | :--- | :--- | :---: | :---: | :--- |
-| **Full Fused (FP16)** | [devankit7873/QJev-1.5B](https://huggingface.co/devankit7873/QJev-1.5B) | 3.08 GB | 3.4 GB | Production servers, vLLM, standalone microservices |
-| **PEFT Adapter** | [devankit7873/QJev-1.5B-LoRA](https://huggingface.co/devankit7873/QJev-1.5B-LoRA) | 20.7 MB | Shared | Multi-tenant deployments caching `Qwen2.5-1.5B-Instruct` |
-| **NF4 Quantized** | [devankit7873/QJev-1.5B-4bit](https://huggingface.co/devankit7873/QJev-1.5B-4bit) | 1.15 GB | 1.07 GB | Resource-constrained edge instances, local workstations |
+| **Full Fused (FP16)** | [AnkitNayak-dev/QJev-1.5B](https://huggingface.co/AnkitNayak-dev/QJev-1.5B) | 3.08 GB | 3.4 GB | Production servers, vLLM, standalone microservices |
+| **PEFT Adapter** | [AnkitNayak-dev/QJev-1.5B-LoRA](https://huggingface.co/AnkitNayak-dev/QJev-1.5B-LoRA) | 20.7 MB | Shared | Multi-tenant deployments caching `Qwen2.5-1.5B-Instruct` |
+| **NF4 Quantized** | [AnkitNayak-dev/QJev-1.5B-4bit](https://huggingface.co/AnkitNayak-dev/QJev-1.5B-4bit) | 1.15 GB | 1.07 GB | Resource-constrained edge instances, local workstations |
 
 ---
 
@@ -117,9 +117,9 @@ pip install -r requirements.txt
 from qjev import QJev
 
 # Load any model variant directly from Hugging Face Hub
-model = QJev.from_pretrained("devankit7873/QJev-1.5B")
-# Or 4-bit quantized: model = QJev.from_pretrained("devankit7873/QJev-1.5B-4bit")
-# Or PEFT adapter:    model = QJev.from_pretrained("devankit7873/QJev-1.5B-LoRA")
+model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B")
+# Or 4-bit quantized: model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B-4bit")
+# Or PEFT adapter:    model = QJev.from_pretrained("AnkitNayak-dev/QJev-1.5B-LoRA")
 
 # Execute decision inference
 result = model.decide(
@@ -162,7 +162,7 @@ python qjev.py --context "Patient presents with acute chest pain and elevated tr
 A production FastAPI service providing REST, Jev protocol, and OpenAI-compatible endpoints:
 
 ```bash
-python serve.py --model devankit7873/QJev-1.5B --port 8000
+python serve.py --model AnkitNayak-dev/QJev-1.5B --port 8000
 ```
 
 #### Endpoints
@@ -211,7 +211,7 @@ python scripts/export_gguf.py --model-dir export/QJev-1.5B-Phase3 --out-file qje
 ### 4. vLLM Serving
 
 ```bash
-vllm serve devankit7873/QJev-1.5B --task classify --port 8000
+vllm serve AnkitNayak-dev/QJev-1.5B --task classify --port 8000
 ```
 
 ---

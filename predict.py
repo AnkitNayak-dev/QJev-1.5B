@@ -37,7 +37,7 @@ class DecisionHead(nn.Module):
         return logits
 
 class QJevModel(nn.Module):
-    def __init__(self, model_id_or_path: str = "devankit7873/QJev-1.5B", device: str = None):
+    def __init__(self, model_id_or_path: str = "AnkitNayak-dev/QJev-1.5B", device: str = None):
         super().__init__()
         if device is None:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -95,12 +95,12 @@ class QJevModel(nn.Module):
 
 def main():
     parser = argparse.ArgumentParser(description="QJev-1.5B Single-Pass Decision Inference")
-    parser.add_argument("--model", type=str, default="devankit7873/QJev-1.5B", help="HF repo or local directory")
+    parser.add_argument("--model", type=str, default="AnkitNayak-dev/QJev-1.5B", help="HF repo or local directory")
     args = parser.parse_args()
 
     # Prefer local export folder if available locally for speed, else HF Hub
     model_path = args.model
-    if model_path == "devankit7873/QJev-1.5B" and os.path.exists("export/Qwen2.5-1.5B-Decision-Head-Merged"):
+    if model_path == "AnkitNayak-dev/QJev-1.5B" and os.path.exists("export/Qwen2.5-1.5B-Decision-Head-Merged"):
         model_path = "export/Qwen2.5-1.5B-Decision-Head-Merged"
 
     model = QJevModel(model_id_or_path=model_path)

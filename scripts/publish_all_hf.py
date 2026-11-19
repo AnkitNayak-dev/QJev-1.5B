@@ -9,9 +9,9 @@ def upload_models():
     print(f"Authenticated as Hugging Face user: {username}")
     
     models_to_upload = [
-        ("devankit7873/QJev-1.5B", "export/QJev-1.5B-Phase3", "Upload Phase 3 Consistency Standalone Model (62.53% JevBench)"),
-        ("devankit7873/QJev-1.5B-LoRA", "export/QJev-1.5B-LoRA", "Update Phase 3 LoRA Adapter and Decision Head"),
-        ("devankit7873/QJev-1.5B-4bit", "export/QJev-1.5B-4bit", "Update Phase 3 4-Bit NF4 Quantized Edition")
+        ("AnkitNayak-dev/QJev-1.5B", "export/QJev-1.5B-Phase3", "Upload Phase 3 Consistency Standalone Model (62.53% JevBench)"),
+        ("AnkitNayak-dev/QJev-1.5B-LoRA", "export/QJev-1.5B-LoRA", "Update Phase 3 LoRA Adapter and Decision Head"),
+        ("AnkitNayak-dev/QJev-1.5B-4bit", "export/QJev-1.5B-4bit", "Update Phase 3 4-Bit NF4 Quantized Edition")
     ]
     
     for repo_id, folder_path, commit_msg in models_to_upload:

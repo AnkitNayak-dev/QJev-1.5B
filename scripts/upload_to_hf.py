@@ -4,7 +4,7 @@ from huggingface_hub import HfApi
 
 def main():
     parser = argparse.ArgumentParser(description="Upload QJev-1.5B to Hugging Face Hub")
-    parser.add_argument("--repo_id", type=str, required=True, help="Hugging Face repo id, e.g. 'devankit/QJev-1.5B'")
+    parser.add_argument("--repo_id", type=str, required=True, help="Hugging Face repo id, e.g. 'AnkitNayak-dev/QJev-1.5B'")
     parser.add_argument("--folder", type=str, default="export/Qwen2.5-1.5B-Decision-Head-Merged", help="Folder to upload")
     parser.add_argument("--token", type=str, default=None, help="Hugging Face API token (optional if already logged in)")
     parser.add_argument("--private", action="store_true", help="Create as private repository")
