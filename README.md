@@ -3,8 +3,8 @@
 # QJev-1.5B: High-Speed System 1 JEV Decision Model
 **Single-Pass Joint Expected Value Decision Engine (~31 ms Forward Pass)**
 
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-AnkitNayak-dev%2FQJev--1.5B-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/AnkitNayak-dev/QJev-1.5B)
-[![GitHub](https://img.shields.io/badge/GitHub-QJev--1.5B-181717?style=flat-square&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-AnkitNayak--dev%2FQJev--1.5B-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/AnkitNayak-dev/QJev-1.5B)
+[![GitHub](https://img.shields.io/badge/GitHub-AnkitNayak--dev%2FQJev--1.5B-181717?style=flat-square&logo=github)](https://github.com/AnkitNayak-dev/QJev-1.5B)
 [![JevBench Strict](https://img.shields.io/badge/JevBench%20Strict-62.53%25%20(tol=0.05)-8A2BE2?style=flat-square)](https://benchmarkheaven.com/jev-models)
 [![JevBench Relaxed](https://img.shields.io/badge/JevBench%20Relaxed-71.50%25%20(tol=0.10)-blue?style=flat-square)](https://benchmarkheaven.com/jev-models)
 [![License](https://img.shields.io/badge/License-Apache%202.0-2EA44F?style=flat-square)](LICENSE)
